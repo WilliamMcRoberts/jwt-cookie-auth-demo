@@ -94,8 +94,9 @@ export const CheckUserStyledPage = (url: string) => {
     return !nonUserStyledRoutes.includes(url);
 };
 
+// fixed - password 
 export const registerFormToUserWithoutId = async (form: registerFormData): Promise<UserWithoutId> => {
-    const hashedPassword = await bcryptjs.hash(form.password, 12);
+    const hashedPassword = await bcryptjs.hash(form.password.toString(), 12);
     const user = {
         URL: form.urlChoice as string,
         firstName: form.firstName.toString(),
