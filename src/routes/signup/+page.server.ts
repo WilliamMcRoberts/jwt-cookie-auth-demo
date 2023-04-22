@@ -10,12 +10,8 @@ export const prerender = false;
 export const actions: Actions = {
     signup: async ({ request }: RequestEvent): Promise<registerFormData | ActionFailure<registerFormData> | Redirect> => {
 
-        const signupFormData = await request.formData();
-        const urlChoice = signupFormData.get('userurl') ?? '';
-        const firstName = signupFormData.get('firstName') ?? '';
-        const lastName = signupFormData.get('lastName') ?? '';
-        const email = signupFormData.get('email') ?? '';
-        const password = signupFormData.get('password') ?? '';
+        const { urlChoice, firstName, lastName, email, password } =
+            Object.fromEntries(await request.formData());
 
         let SignUpResponse: registerFormData = {
             emailUsed: false,
@@ -31,9 +27,9 @@ export const actions: Actions = {
             password: ''
         }
 
-        const isPassStrong = checkPassword(password.toString());
+        const isPasswordStrong = checkPassword(password.toString());
 
-        if (!isPassStrong) {
+        if (!isPasswordStrong) {
             SignUpResponse.weakPassword = true;
             SignUpResponse.error = true;
             SignUpResponse.message = "Password does not meet requirements!"

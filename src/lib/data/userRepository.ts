@@ -13,8 +13,9 @@ export const returnAllUsers = async (collection: Collection) => {
 export const returnURLsList = async (collection: Collection): Promise<string[]> => {
     const projection = { URL: 1, _id: 0 }
     const users = await collection.find().project(projection).toArray();
-    const userList: string[] = users.map((user) => user.URL)
-    return userList.sort()
+    const urlList: string[] = users.map((user) => user.URL)
+    console.log("end")
+    return urlList.sort()
 }
 
 export const returnEmailsList = async (collection: Collection): Promise<string[]> => {

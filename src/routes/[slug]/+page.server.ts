@@ -20,7 +20,6 @@ export async function load({ parent, params }) {
 
     let noAuthUser: UserWithoutPassword;
 
-
     try {
         const collection = await dbConn();
         const tempUser = await findUserByUrl(collection, requestedUrl);
@@ -35,6 +34,4 @@ export async function load({ parent, params }) {
         throw error(500, { code: 500, message: "" })
     }
     return { requestedUrl, noAuthUser }
-
-
 }

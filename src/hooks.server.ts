@@ -4,23 +4,25 @@ import { findUserByUrl } from '$lib/data/userRepository';
 import jwt from 'jsonwebtoken';
 
 export async function handle({ event, resolve }) {
+
     const authToken = event.cookies.get('authToken');
-    try {
-        if (!authToken) event.locals.authedUser = undefined;
-
-        const claims = jwt.verify(authToken ?? '', SECRET_INGREDIENT);
-        if (!claims) event.locals.authedUser = undefined;
-
-        if (authToken && claims) {
-            const collection = await dbConn();
-            const fullUser = await findUserByUrl(collection, claims.authedUser.URL);
-            const { password, ...userMinusPassword } = fullUser;
-            event.locals.authedUser = userMinusPassword;
-        }
-    }
-    finally {
-        const response = await resolve(event);
-        return response;
+    if (!authToken) {
+        event.locals.authedUser = undefined;
+        return await resolve(event);
     }
 
+    const claims = jwt.verify(authToken, SECRET_INGREDIENT);
+    if (!claims) {
+        event.locals.authedUser = undefined;
+        return await resolve(event);
+    }
+
+    if (authToken && claims) {
+        const collection = await dbConn();
+        const fullUser = await findUserByUrl(collection, claims.authedUser.URL);
+        const { password, ...userMinusPassword } = fullUser;
+        event.locals.authedUser = userMinusPassword;
+    }
+
+    return await resolve(event);
 }
