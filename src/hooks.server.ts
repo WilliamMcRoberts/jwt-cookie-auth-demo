@@ -8,7 +8,7 @@ export async function handle({ event, resolve }) {
     try {
         if (!authToken) event.locals.authedUser = undefined;
 
-        const claims = jwt.verify(authToken, SECRET_INGREDIENT);
+        const claims = jwt.verify(authToken ?? '', SECRET_INGREDIENT);
         if (!claims) event.locals.authedUser = undefined;
 
         if (authToken && claims) {
@@ -16,7 +16,6 @@ export async function handle({ event, resolve }) {
             const fullUser = await findUserByUrl(collection, claims.authedUser.URL);
             const { password, ...userMinusPassword } = fullUser;
             event.locals.authedUser = userMinusPassword;
-
         }
     }
     finally {

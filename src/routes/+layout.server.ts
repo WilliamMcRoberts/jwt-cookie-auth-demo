@@ -10,6 +10,7 @@ export async function load({ }) {
         hasError: false,
         error: ''
     }
+
     let URLList: string[] = [];
 
     try {

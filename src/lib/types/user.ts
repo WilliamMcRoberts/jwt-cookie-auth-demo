@@ -12,7 +12,9 @@ export interface User {
     palette: Palette,
     resetTimer: number | null | undefined
 }
+
 export interface UserWithoutId extends Omit<User, '_id'> { }
+
 export interface UserWithoutPassword extends Omit<User, 'password'> { }
 
 export interface Options {
