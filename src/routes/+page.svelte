@@ -12,7 +12,6 @@
 		const newUser = data?.authedUser;
 		user.set(newUser);
 	}
-	console.log(data);
 </script>
 
 <h1 class="text-center text-3xl font-bold">
